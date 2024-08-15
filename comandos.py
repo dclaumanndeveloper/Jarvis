@@ -18,10 +18,19 @@ devices = AudioUtilities.GetSpeakers()
 interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
 volume = cast(interface, POINTER(IAudioEndpointVolume))
 
+def say(text):    
+    engine.say(text)
+    engine.runAndWait()
+    return
+
+
 # Função para falar
 def speak(text):
     engine.say(text)
     engine.runAndWait()
+    return
+    #engine.runAndWait()
+    
 
 def tocar(query):
     song = query.replace('tocar', "")

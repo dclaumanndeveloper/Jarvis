@@ -6,7 +6,7 @@ import os
 import threading
 import tkinter as tk
 from tkinter import ttk
-from comandos import speak,tocar,horas,pesquisar,aumentar_volume,diminuir_volume,definir_volume,abrir,verificar_internet,get_system_info
+from comandos import speak,say,tocar,horas,pesquisar,aumentar_volume,diminuir_volume,definir_volume,abrir,verificar_internet,get_system_info
 import pywhatkit
 
 # Inicialização do reconhecedor de voz e do sintetizador de fala
@@ -15,10 +15,13 @@ engine = pyttsx3.init()
 
 # Função para ouvir o usuário
 def listen():
-    with sr.Microphone() as source:
+    print("Chegou aqui 1")
+    r = sr.Microphone()
+    with r as source:
+        print("Chegou aqui 2")
         print("Ouvindo...")
-        recognizer.adjust_for_ambient_noise(source)
-        audio = recognizer.listen(source,timeout=3)
+        #recognizer.adjust_for_ambient_noise(source)
+        audio = recognizer.listen(source)
     try:
         command = recognizer.recognize_google(audio, language='pt-BR')
         print(f"Você disse: {command}")
@@ -26,12 +29,13 @@ def listen():
     except sr.UnknownValueError:
         return ""
     except sr.RequestError as e:
-        #speak("Erro ao se conectar ao serviço de reconhecimento de voz; {0}".format(e))
-        return ""
+        print(f"{e}")
+        return " Deu Erro"
     except sr.WaitTimeoutError:
         return ""
     except sr.exceptions.WaitTimeoutError:
         return ""
+
 
 # Função para responder a perguntas e executar comandos
 def execute_command(command):
@@ -62,19 +66,6 @@ def execute_command(command):
         speak("Até logo!")
         exit()
     
-# Interface gráfica
-#window = tk.Tk()
-#window.title("Jarvis")
-#style = ttk.Style()
-#style.theme_use('clam')
-
-#label_status = ttk.Label(window, text="Jarvis ativado. Diga 'Jarvis' para me chamar.")
-#label_status.pack()
-
-#text_output = tk.Text(window, height=10, width=50)
-#text_output.pack()
-
-
 is_listening = False
 
 def start_listening():
@@ -87,7 +78,6 @@ def start_listening():
 def stop_listening():
     global is_listening
     is_listening = False
-#    label_status.config(text="Jarvis ativado. Diga 'Jarvis' para me chamar.")
 
 # Loop principal
 def listen_for_command():
@@ -101,14 +91,14 @@ def listen_for_command():
                 speak("Bom dia senhor!")
             
             elif hour>=12 and hour<18:
-                
-                speak("Boa tarde senhor!")
+                engine.say("Boa tarde senhor!")
+                #engine.runAndWait()
+                #speak("Boa tarde senhor!")
             
             else:
                 speak("Boa noite senhor!")
-                speak("Como posso ajudar?")
-                command = listen()
-                execute_command(command)
+            speak("Qual sua ordem?")
+            command = listen()
+            execute_command(command)
 
 start_listening()
-#window.mainloop()
