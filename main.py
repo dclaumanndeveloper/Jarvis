@@ -20,7 +20,7 @@ def listen():
     with r as source:
         print("Chegou aqui 2")
         print("Ouvindo...")
-        #recognizer.adjust_for_ambient_noise(source)
+        recognizer.adjust_for_ambient_noise(source)
         audio = recognizer.listen(source)
     try:
         command = recognizer.recognize_google(audio, language='pt-BR')
