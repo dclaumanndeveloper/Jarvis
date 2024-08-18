@@ -10,7 +10,7 @@ import os
 import speedtest
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume 
 import psutil
-
+from distutils.version import LooseVersion
 engine = pyttsx3.init()
 
 # Inicialização do controle de volume
@@ -28,8 +28,6 @@ def say(text):
 def speak(text):
     engine.say(text)
     engine.runAndWait()
-    return
-    #engine.runAndWait()
     
 
 def tocar(query):

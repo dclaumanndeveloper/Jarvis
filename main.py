@@ -100,5 +100,27 @@ def listen_for_command():
             speak("Qual sua ordem?")
             command = listen()
             execute_command(command)
+# Criar a janela principal
+window = tk.Tk()
+window.title("Jarvis")
+
+# Configurar o estilo (opcional)
+style = ttk.Style()
+style.theme_use('clam')  # Ou outro tema de sua preferência
+
+# Adicionar elementos à interface (exemplos)
+label_status = ttk.Label(window, text="Jarvis ativado. Diga 'Jarvis' para me chamar.")
+label_status.pack()
+
+text_output = tk.Text(window, height=10, width=50)
+text_output.pack()
+
+# Função para atualizar a interface com a saída da IA
+def update_output(text):
+    text_output.insert(tk.END, text + "\n")
+    text_output.see(tk.END)  # Rolar para o final
 
 start_listening()
+
+# Iniciar o loop principal da interface gráfica
+window.mainloop()
