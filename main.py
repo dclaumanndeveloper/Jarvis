@@ -6,8 +6,9 @@ import os
 import threading
 import tkinter as tk
 from tkinter import ttk
-from comandos import speak,say,tocar,horas,pesquisar,aumentar_volume,diminuir_volume,definir_volume,abrir,verificar_internet,get_system_info
+from comandos import buscar_temperatura,escreva,speak,tocar,horas,pesquisar,aumentar_volume,diminuir_volume,definir_volume,abrir,verificar_internet,get_system_info
 import pywhatkit
+import time
 
 # Inicialização do reconhecedor de voz e do sintetizador de fala
 recognizer = sr.Recognizer()
@@ -15,14 +16,16 @@ engine = pyttsx3.init()
 
 # Função para ouvir o usuário
 def listen():
-    print("Chegou aqui 1")
     r = sr.Microphone()
     with r as source:
-        print("Chegou aqui 2")
-        print("Ouvindo...")
-        recognizer.adjust_for_ambient_noise(source,duration=1)
-        audio = recognizer.listen(source,timeout=5)
+        try:
+            print("Ouvindo!")
+            #recognizer.adjust_for_ambient_noise(source,duration=1)  
+            audio = recognizer.listen(source,timeout=2)
+        except sr.exceptions.WaitTimeoutError:
+            return ""
     try:
+        
         command = recognizer.recognize_google(audio, language='pt-BR')
         print(f"Você disse: {command}")
         return command.lower()
@@ -35,6 +38,9 @@ def listen():
         return ""
     except sr.exceptions.WaitTimeoutError:
         return ""
+    except recognizer.exceptions.WaitTimeOutError:
+        return ""
+    
 
 
 # Função para responder a perguntas e executar comandos
@@ -42,26 +48,39 @@ def execute_command(command):
     if 'horas' in command:
         horas()
     elif 'tocar' in command:
-        tocar(command)    
+        tocar(command) 
+        window.withdraw()   
     elif 'aumentar volume' in command:
         aumentar_volume()
+        window.withdraw()  
     elif 'diminuir volume' in command:
         diminuir_volume()
+        window.withdraw()  
     elif 'definir' in command and 'volume' in command:
         definir_volume(command)
+        window.withdraw()  
     elif 'pesquisar' in command:
         pesquisar(command)
+        window.withdraw()  
     elif 'abrir' in command:
         abrir(command)
+        window.withdraw()  
     elif 'verificar' in command and 'internet' in command:
         verificar_internet()
+        window.withdraw()  
     elif 'verificar' in command and 'sistema' in command:
             system_info = get_system_info()
             for key, value in system_info.items():
                 print(f'{key}: {value}')
                 speak(f'{key}: {value}')
+                window.withdraw()  
     elif 'ligar as luzes' in command:
         speak("Ligando as luzes.")
+    elif 'temperatura' in command :
+        buscar_temperatura()
+        window.withdraw()  
+    elif 'escreva' in command:
+        escreva(command)
     elif 'sair' in command:
         speak("Até logo!")
         exit()
@@ -69,6 +88,18 @@ def execute_command(command):
 is_listening = False
 
 def start_listening():
+    speak("Inicializando o sistema!")
+    time.sleep(2)
+    speak("Verificando integrações!")
+    time.sleep(2)
+    speak("Verificando hardware!")
+    time.sleep(2)
+    speak("Ligando motores!")
+    time.sleep(5)
+    speak("Motores ligados!")
+    time.sleep(10)
+    speak("Sistema Online!")
+    time.sleep(1)
     global is_listening
     if not is_listening:
         is_listening = True
@@ -84,6 +115,7 @@ def listen_for_command():
     while is_listening:
         activation_phrase = listen()
         if 'jarvis' in activation_phrase:
+            window.withdraw()
             hour = int(datetime.datetime.now().hour)
 
             if hour>=0 and hour<12:

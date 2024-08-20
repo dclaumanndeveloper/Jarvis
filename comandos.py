@@ -1,3 +1,4 @@
+import pyautogui
 import pyttsx3
 import pywhatkit
 from datetime import datetime
@@ -10,6 +11,7 @@ import os
 import speedtest
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume 
 import psutil
+import geocoder
 from distutils.version import LooseVersion
 engine = pyttsx3.init()
 
@@ -28,7 +30,25 @@ def say(text):
 def speak(text):
     engine.say(text)
     engine.runAndWait()
-    
+
+def get_current_location():
+    # Get your current location based on IP address
+    location = geocoder.ip('me')
+
+    # Access city and country information
+    city = location.city
+    country = location.country
+
+    return city, country
+def buscar_temperatura():
+    # Get current location
+    city, country = get_current_location()
+   
+    # Construct a Google search query for the current temperature
+    search_query = f"temperature in {city}, {country}"
+
+    # Open the default web browser with the Google search query
+    webbrowser.open(f"https://www.google.com/search?q={search_query}")    
 
 def tocar(query):
     song = query.replace('tocar', "")
@@ -38,7 +58,11 @@ def tocar(query):
 def horas():
     now = datetime.now()
     speak(f"Agora são {now.hour} horas e {now.minute} minutos.") 
-
+def pausar():
+    pyautogui.press("k")
+    
+def play():
+    pyautogui.press("k")
 def pesquisar(command):
         query = command.replace('pesquisar', '')
         webbrowser.open(f"https://www.google.com/search?q={query}")
@@ -108,6 +132,7 @@ def abrir(query):
                         ["snapchat", "https://www.snapchat.com"],
                         ["weather", "https://www.weather.com"],
                         ["craigslist", "https://www.craigslist.org"],
+                        ["tribal wars", "https://br128.tribalwars.com.br/game.php?village=13497&screen=overview"],
                     ]
                     for site in sites:
                         if f"Abrir {site[0]}".lower() in query.lower():
@@ -183,8 +208,8 @@ def verificar_internet():
     download_net = round(wifi.download() / 1048576,2)
     print("Wifi velocidade de upload", upload_net)
     print("Wifi velocidade de download", download_net)
-    speak(f"Wifi velocidade de Upload  {upload_net}")
-    speak(f"Wifi velocidade de download {download_net}")
+    speak(f"Velocidade de Upload  {upload_net}")
+    speak(f"Velocidade de download {download_net}")
     
 # Function to get system information
 def get_system_info():
@@ -206,3 +231,10 @@ def get_system_info():
     system_info['Uso de Memória'] = f'{memory_info.percent}%'
 
     return system_info 
+
+def escreva(command):
+    
+    escreva = command.replace("escreva","")
+    
+    pyautogui.write(escreva)
+    
