@@ -38,8 +38,7 @@ def listen():
         return ""
     except sr.exceptions.WaitTimeoutError:
         return ""
-    except recognizer.exceptions.WaitTimeOutError:
-        return ""
+    
     
 
 
@@ -124,8 +123,6 @@ def listen_for_command():
             
             elif hour>=12 and hour<18:
                 engine.say("Boa tarde senhor!")
-                #engine.runAndWait()
-                #speak("Boa tarde senhor!")
             
             else:
                 speak("Boa noite senhor!")
