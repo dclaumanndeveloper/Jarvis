@@ -5,6 +5,7 @@ import datetime
 import os
 import threading
 import tkinter as tk
+import sys
 from tkinter import ttk
 from comandos import buscar_temperatura,escreva,speak,tocar,horas,pesquisar,aumentar_volume,diminuir_volume,definir_volume,abrir,verificar_internet,get_system_info
 import pywhatkit
@@ -16,27 +17,41 @@ engine = pyttsx3.init()
 
 # Função para ouvir o usuário
 def listen():
-    r = sr.Microphone()
-    with r as source:
+     r = sr.Recognizer()
+    command = "" # Initialize command as empty string
+
+    # Option to type command
+    print("Digite seu comando ou aguarde para falar:")
+    typed_command = input()
+    if typed_command:
+        return typed_command.lower()
+
+    # Option to listen to voice
+    with sr.Microphone() as source:
         try:
             print("Ouvindo!")
-            #recognizer.adjust_for_ambient_noise(source,duration=1)  
-            audio = recognizer.listen(source,timeout=2)
+            #recognizer.adjust_for_ambient_noise(source,duration=1)
+            audio = recognizer.listen(source,timeout=5) # Increased timeout slightly
         except sr.exceptions.WaitTimeoutError:
+            print("Tempo de espera esgotado para entrada de voz.")
+            return "" # Return empty if voice input times out
+        except Exception as e:
+            print(f"Erro ao acessar o microfone: {e}")
             return ""
+
+
     try:
-        
         command = recognizer.recognize_google(audio, language='pt-BR')
         print(f"Você disse: {command}")
         return command.lower()
     except sr.UnknownValueError:
+        print("Não foi possível entender o áudio.")
         return ""
     except sr.RequestError as e:
-        print(f"{e}")
-        return " Deu Erro"
-    except sr.WaitTimeoutError:
+        print(f"Erro na requisição ao serviço de reconhecimento de fala; {e}")
         return ""
-    except sr.exceptions.WaitTimeoutError:
+    except Exception as e:
+        print(f"Ocorreu um erro inesperado durante o reconhecimento de fala: {e}")
         return ""
     
     
