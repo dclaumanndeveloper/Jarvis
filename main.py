@@ -17,7 +17,7 @@ engine = pyttsx3.init()
 
 # Função para ouvir o usuário
 def listen():
-     r = sr.Recognizer()
+    r = sr.Recognizer()
     command = "" # Initialize command as empty string
 
     # Option to type command
