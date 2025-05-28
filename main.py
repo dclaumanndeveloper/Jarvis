@@ -7,7 +7,7 @@ import threading
 import tkinter as tk
 import sys
 from tkinter import ttk
-from comandos import buscar_temperatura,escreva,speak,tocar,horas,pesquisar,aumentar_volume,diminuir_volume,definir_volume,abrir,verificar_internet,get_system_info
+from comandos import finish_day,start_day,buscar_temperatura,escreva,speak,tocar,horas,pesquisar,aumentar_volume,diminuir_volume,definir_volume,abrir,verificar_internet,get_system_info
 import pywhatkit
 import time
 
@@ -95,6 +95,10 @@ def execute_command(command):
         window.withdraw()  
     elif 'escreva' in command:
         escreva(command)
+    elif 'iniciar dia' in command:
+        start_day()
+    elif 'finalizar dia' in command:
+        finish_day()
     elif 'sair' in command:
         speak("Até logo!")
         exit()

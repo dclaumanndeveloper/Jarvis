@@ -148,7 +148,7 @@ def abrir(query):
                     ]
                     for site in sites:
                         if f"Abrir {site[0]}".lower() in query.lower():
-                            speak(f"Abrindo {site[0]} senhor...")
+                            speak(f"Abrindo {site[0]}")
                             webbrowser.open(site[1])
                     if "abrir câmera".lower() in query.lower():
                         print("Tentando abrir camera")
@@ -200,6 +200,7 @@ def abrir(query):
 
                     elif "abrir vscode".lower() in query.lower():
                         print("Tentando abrir o Visual Studio Code")
+                        speak("Abrindo Visual Studio Code")
                         if platform.system() == "Windows":
                             os.system("code")
                             print("Visual Studio Code aberto")
@@ -211,6 +212,56 @@ def abrir(query):
                             webbrowser.open("http://www.google.com")
                             print("Navegador aberto")
                             speak("Navegador aberto")
+
+                    elif "abrir vscode".lower() in query.lower():
+                        print("Tentando abrir o Visual Studio Code")
+                        if platform.system() == "Windows":
+                            os.system("code")
+                            print("Visual Studio Code aberto")
+                            speak("Visual Studio Code aberto")
+
+                    elif "abrir teams".lower() in query.lower() or "abrir microsoft teams".lower() in query.lower():
+                        print("Tentando abrir o Microsoft Teams")
+                        speak("Abrindo Microsoft Teams")
+                        if platform.system() == "Windows":
+                            os.system("start ms-teams.exe")
+                            print("Microsoft Teams aberto")
+                            speak("Microsoft Teams aberto")
+
+def fechar(command):
+    if "fechar" in command:
+        if "vscode" in command:
+            speak("Fechando Visual Studio Code")
+            os.system("taskkill /f /im code.exe")
+        elif "notion" in command:
+            speak("Fechando Navegador")
+            os.system("taskkill /f /im arc.exe")
+        elif "teams" in command or "microsoft teams" in command:
+            speak("Fechando Microsoft Teams")
+            os.system("taskkill /f /im ms-teams.exe")
+        else:
+            speak("Comando não reconhecido para fechar.")
+
+def start_day():
+    speak("Iniciando o dia...")
+    print("Iniciando o dia...")
+    abrir("abrir vscode")
+    abrir("abrir notion")
+    abrir("abrir github")
+    abrir("abrir teams")
+    speak("Dia iniciado com sucesso!")
+
+def finish_day():
+    speak("Finalizando o dia...")
+    print("Finalizando o dia...")
+    #fechar("fechar vscode")
+    fechar("fechar notion")
+    fechar("fechar teams")
+    if platform.system() == "Windows":
+        os.system("rundll32.exe user32.dll,LockWorkStation")
+        speak("Tela bloqueada.")
+    speak("Dia finalizado com sucesso!")
+
 
 def verificar_internet():
     speak("Calculando velocidade da internet")
