@@ -21,10 +21,10 @@ def listen():
     command = "" # Initialize command as empty string
 
     # Option to type command
-    print("Digite seu comando ou aguarde para falar:")
-    typed_command = input()
-    if typed_command:
-        return typed_command.lower()
+    #print("Digite seu comando ou aguarde para falar:")
+    #typed_command = input()
+    #if typed_command:
+    #    return typed_command.lower()
 
     # Option to listen to voice
     with sr.Microphone() as source:
