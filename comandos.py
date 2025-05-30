@@ -157,8 +157,6 @@ def abrir(query):
                             print("Camera aberta")
                             speak("Camera opened")
 
-                    
-
                     elif "abrir explorer".lower() in query.lower() or "abrir arquivos" in query:
                         print("Tentando abrir Explorer")
                         if platform.system() == "Windows":
@@ -249,6 +247,7 @@ def start_day():
     abrir("abrir notion")
     abrir("abrir github")
     abrir("abrir teams")
+    abrir("abrir explorer")
     speak("Dia iniciado com sucesso!")
 
 def finish_day():
